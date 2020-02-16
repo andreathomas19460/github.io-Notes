@@ -2,8 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const uuidv1 = require('uuid/v1');
-
+const uuidv1 = require('uuidv1');
+    console.log(uuidv1())
 const app =  express();
 
 
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/notes', (req, res) => {
   fs.readFile('db/db.json', 'utf8', function(err, contents) {
-    var words = JSON.parse(contents);
+    let words = JSON.parse(contents);
     res.send(words);
   });
 });
@@ -61,14 +61,15 @@ app.delete('/api/notes/:id', (req, res) => {
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'home', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-app.get('/note', (req, res) => {
-  res.sendFile(path.join(__dirname, 'home', 'note.html'));
+app.get('/notes', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'notes.html'));
 });
 
-app.use(express.static(path.join(__dirname, 'home')));
+app.use(express.static(path.join(__dirname, 'public')));
 
-const PORT = process.env.PORT || 8000;
+
+const PORT = process.env.PORT || 8080;
 app.listen(PORT);
