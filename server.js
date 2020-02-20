@@ -9,7 +9,9 @@ const app =  express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
+require('./routes/htmlRoutes')(app);
 
 app.get('/api/notes', (req, res) => {
   fs.readFile('db/db.json', 'utf8', function(err, contents) {
@@ -59,17 +61,13 @@ app.delete('/api/notes/:id', (req, res) => {
 
 })
 
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/notes', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'notes.html'));
-});
-
-app.use(express.static(path.join(__dirname, 'public')));
-
+// app.get('/notes', (req, res) =>
+// res.sendFile(path.join(__dirname, '../public/notes.html'))
+// );
+// app.get('*', (req, res) =>
+// res.sendFile(path.join(__dirname, '../public/index.html'))
+// );
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT);
+
